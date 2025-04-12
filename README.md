@@ -31,6 +31,11 @@ More [here](wrangler-docs/upcoming-features.md) on upcoming features.
   * A new capability that allows CDAP Administrators to **restrict the directives** that are accessible to their users.
 More information on configuring can be found [here](wrangler-docs/exclusion-and-aliasing.md)
 
+- **New Token Parsers** for Byte Size and Time Duration (e.g., `10MB`, `500KB`, `100ms`, `1.5s`) supported within Wrangler grammar.
+- **New Directive**: `aggregate-stats`  
+  Aggregate size and duration columns, with optional unit conversion (e.g., from `KB` to `MB`, `ms` to `seconds`).  
+  Supports aggregation type: `total` and `average`.
+
 ## Demo Videos and Recipes
 
 Videos and Screencasts are best way to learn, so we have compiled simple, short screencasts that shows some of the features of Data Prep. Additional videos can be found [here](https://www.youtube.com/playlist?list=PLhmsf-NvXKJn-neqefOrcl4n7zU4TWmIr)
@@ -60,6 +65,9 @@ Videos and Screencasts are best way to learn, so we have compiled simple, short 
   * [Parsing Apache Log Files](wrangler-demos/parsing-apache-log-files.md)
   * [Parsing CSV Files and Extracting Column Values](wrangler-demos/parsing-csv-extracting-column-values.md)
   * [Parsing HL7 CCDA XML Files](wrangler-demos/parsing-hl7-ccda-xml-files.md)
+  * Aggregating Transfer Sizes and Durations  
+  * Example usage of `aggregate-stats` directive to compute total size in MB and total time in seconds:
+  * Converts input like `10MB, 250ms` into cumulative or average values across rows.
 
 ## Available Directives
 
@@ -163,6 +171,11 @@ These directives are currently available:
 | [DDL](wrangler-docs/functions/ddl-functions.md)                                 | Functions that can manipulate definition of data                 |
 | [JSON](wrangler-docs/functions/json-functions.md)                               | Functions that can be useful in transforming your data           |
 | [Types](wrangler-docs/functions/type-functions.md)                              | Functions for detecting the type of data                         |
+| **Aggregation**                                                                      
+
+| aggregate-stats                                                        | Aggregates byte size and time duration columns with unit conversion. 
+                                                                         Useful for computing total or average transfer sizes and durations. |
+
 
 ## Performance
 
