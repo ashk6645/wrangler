@@ -171,10 +171,9 @@ These directives are currently available:
 | [DDL](wrangler-docs/functions/ddl-functions.md)                                 | Functions that can manipulate definition of data                 |
 | [JSON](wrangler-docs/functions/json-functions.md)                               | Functions that can be useful in transforming your data           |
 | [Types](wrangler-docs/functions/type-functions.md)                              | Functions for detecting the type of data                         |
-| **Aggregation**                                                                      
-
-| aggregate-stats                                                        | Aggregates byte size and time duration columns with unit conversion. 
-                                                                         Useful for computing total or average transfer sizes and durations. |
+| **Aggregation**                                                        |                                                                           |
+| aggregate-stats                                                        |   Aggregates byte size and time duration columns with unit conversion.    |
+                                                                         |   Useful for computing total or average transfer sizes and durations.     | 
 
 
 ## Performance
