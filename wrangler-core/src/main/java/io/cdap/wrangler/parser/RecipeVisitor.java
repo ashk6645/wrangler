@@ -38,6 +38,16 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import io.cdap.wrangler.api.parser.ByteSize;
+import io.cdap.wrangler.api.parser.TimeDuration;
+import io.cdap.wrangler.parser.DirectivesBaseVisitor;
+import io.cdap.wrangler.parser.DirectivesParser;
+import io.cdap.wrangler.parser.DirectivesLexer;
+import io.cdap.wrangler.api.parser.ByteSize;
+import io.cdap.wrangler.api.parser.TimeDuration;
+import io.cdap.wrangler.parser.DirectivesParser;
+import io.cdap.wrangler.parser.DirectivesParser.ByteSizeArgContext;
+import io.cdap.wrangler.parser.DirectivesParser.TimeDurationArgContext;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,7 +70,7 @@ import java.util.Map;
  * <p> As the <code>ParseTree</code> is walking through the call graph, it generates
  * one <code>TokenGroup</code> for each directive in the recipe. Each <code>TokenGroup</code>
  * contains parsed <code>Tokens</code> for that directive along with more information like
- * <code>SourceInfo</code>. A collection of <code>TokenGroup</code> consistutes a <code>RecipeSymbol</code>
+ * <code>SourceInfo</code>. A collection of <code>TokenGroup</code> consists a <code>RecipeSymbol</code>
  * that is returned by this function.</p>
  */
 public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Builder> {
@@ -71,7 +81,7 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
    * object has all the tokens that were successfully parsed along with source
    * information for each directive in the recipe.
    *
-   * @return An compiled object after parsing the recipe.
+   * @return A compiled object after parsing the recipe.
    */
   public RecipeSymbol getCompiledUnit() {
     return builder.build();
@@ -139,12 +149,26 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
   }
 
   /**
-   * A Pragma version is a informational directive to notify compiler about the grammar that is should
+   * A Pragma version is an informational directive to notify compiler about the grammar that should
    * be using to parse the directives below.
    */
   @Override
   public RecipeSymbol.Builder visitPragmaVersion(DirectivesParser.PragmaVersionContext ctx) {
     builder.addVersion(ctx.Number().getText());
+    return builder;
+  }
+
+  @Override
+  public RecipeSymbol.Builder visitByteSizeArg(DirectivesParser.ByteSizeArgContext ctx) {
+    // Add a ByteSize token to the current token group
+    builder.addToken(new ByteSize(ctx.getText()));
+    return builder;
+  }
+
+  @Override
+  public RecipeSymbol.Builder visitTimeDurationArg(DirectivesParser.TimeDurationArgContext ctx) {
+    // Add a TimeDuration token to the current token group
+    builder.addToken(new TimeDuration(ctx.getText()));
     return builder;
   }
 
@@ -195,6 +219,9 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
     return builder;
   }
 
+
+
+
   /**
    * A Directive can consist of text field. These type of fields are enclosed within
    * a single-quote or a double-quote. This visitor method extracts the string value
@@ -230,7 +257,7 @@ public final class RecipeVisitor extends DirectivesBaseVisitor<RecipeSymbol.Buil
   }
 
   /**
-   * A Directive can include a expression or a condition to be evaluated. When
+   * A Directive can include an expression or a condition to be evaluated. When
    * such a token type is found, the visitor extracts the expression and generates
    * a token type <code>Expression</code> to be added to the <code>TokenGroup</code>
    */

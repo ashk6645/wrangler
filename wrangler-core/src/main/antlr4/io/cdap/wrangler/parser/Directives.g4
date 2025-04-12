@@ -8,8 +8,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
  */
@@ -31,8 +31,8 @@ options {
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
  */
@@ -64,6 +64,8 @@ directive
     | stringList
     | numberRanges
     | properties
+    | byteSizeArg
+    | timeDurationArg
   )*?
   ;
 
@@ -140,7 +142,7 @@ numberRange
  ;
 
 value
- : String | Number | Column | Bool
+ : String | Number | Column | Bool | ByteSize | TimeDuration
  ;
 
 ecommand
@@ -195,6 +197,19 @@ identifierList
  : Identifier (',' Identifier)*
  ;
 
+/*
+ * New rule for byte size argument
+ */
+byteSizeArg
+ : ByteSize
+ ;
+
+/*
+ * New rule for time duration argument
+ */
+timeDurationArg
+ : TimeDuration
+ ;
 
 /*
  * Following are the Lexer Rules used for tokenizing the recipe.
@@ -255,6 +270,41 @@ Bool
 
 Number
  : Int ('.' Digit*)?
+ ;
+
+/*
+ * New token for Byte Size
+ */
+ByteSize
+ : Number BYTE_UNIT
+ ;
+
+/*
+ * New token for Time Duration
+ */
+TimeDuration
+ : Number TIME_UNIT
+ ;
+
+/*
+ * Helper fragment for Byte Units
+ */
+fragment BYTE_UNIT
+ : [kK][bB]
+ | [mM][bB]
+ | [gG][bB]
+ | [tT][bB]
+ ;
+
+/*
+ * Helper fragment for Time Units
+ */
+fragment TIME_UNIT
+ : [mM][sS]
+ | [sS]
+ | [mM][iI][nN]
+ | [hH]
+ | [dD]
  ;
 
 Identifier
